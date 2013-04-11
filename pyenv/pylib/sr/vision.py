@@ -73,7 +73,7 @@ def create_marker_lut(offset):
                         ( MARKER_TOKEN, 24 )]:
 
         for n in range(0,num):
-            code = code = offset + marker_offsets[genre] + n
+            code = code - offset + marker_offsets[genre] + n
             m = MarkerInfo( code = code,
                             marker_type = genre,
                             offset = n,
