@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import os, sys, tempfile, subprocess, shutil, re
 
+SKIP_STRIP = not sys.platform.startswith('linux')
+
 def find_pyenv_rev( reporoot ):
     "Return the revision of pyenv"
 
@@ -53,6 +55,9 @@ def strip_binary( elfpath ):
 
 def strip_binaries( tmpd ):
     "Strip debug symbols from all the ARM binaries"
+
+    if SKIP_STRIP:
+        return
 
     for dirpath, dirnames, filenames in os.walk(tmpd):
         for fname in filenames:
