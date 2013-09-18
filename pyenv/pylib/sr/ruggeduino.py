@@ -35,6 +35,9 @@ INPUT = "INPUT"
 OUTPUT = "OUTPUT"
 INPUT_PULLUP = "INPUT_PULLUP"
 
+# Analogue input pins
+A0, A1, A2, A3, A4, A5 = 14, 15, 16, 17, 18, 19
+
 class Ruggeduino(object):
     def __init__(self, path):
         self.path = path
