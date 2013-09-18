@@ -2,6 +2,7 @@
 import json, sys, optparse, time, os, glob
 import pysric, tssric
 import motor, power, servo, jointio, vision
+import enumerate_tty, ruggeduino
 
 class NoCameraPresent(Exception):
     "Camera not connected."
@@ -99,6 +100,10 @@ class Robot(object):
         if pysric.SRIC_CLASS_POWER not in self.sricman.devices:
             raise Exception( "Power board not enumerated -- aborting." )
         self.power = power.Power( self.sricman.devices[pysric.SRIC_CLASS_POWER][0] )
+
+        # Ruggeduinos
+        ruggeduinos = enumerate_tty.find_devices(lambda attr: attr('product') == 'Ruggeduino')
+        self.ruggeduinos = [ruggeduino.Ruggeduino(tty) for tty in ruggeduinos]
 
     def _init_vision(self, camdev):
         if not os.path.exists(camdev):
