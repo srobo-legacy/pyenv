@@ -40,7 +40,7 @@ class UserCode(object):
 
         sricman = sr.tssric.SricCtxMan()
         power = sr.power.Power( sricman.devices[sr.pysric.SRIC_CLASS_POWER][0] )
-        power._set_motor_rail( False )
+        power.set_motor_rail( False )
 
         print "Match ended -- User code killed."
 
