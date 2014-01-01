@@ -12,6 +12,11 @@ this repository are constructed:
  * Other libraries: The libraries in pyenv/lib are mainly from the SR
    openembedded tree.
 
+When compiling replacement firmware or other libraries which will be included
+as binaries, note that these need to be compiled to target the SR kit.
+In general, this means that they should be compiled in the SR openembedded
+tree's build environment.
+
 Patches
 -------
 
