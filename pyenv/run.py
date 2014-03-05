@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import optparse, sys, os, time, shutil
+import optparse, signal, sys, os, time, shutil
 from subprocess import Popen, call
 import sricd, fw, log, squidge, usercode, conf
 
@@ -60,6 +60,10 @@ class RobotRunner(object):
         # Funnel button presses through to X
         Popen( "srinput" )
 
+    def sigterm_handler(self, signum, frame):
+        self.user.end_match()
+        sys.exit(0)
+
     def run(self):
         #Tell things that code is being run
         open(self.config.robot_running,"w").close()
@@ -76,6 +80,8 @@ class RobotRunner(object):
             "Competition mode"
             self.real_sleep( start_time, MATCH_DURATION )
             self.user.end_match()
+
+        signal.signal(signal.SIGTERM, self.sigterm_handler)
 
         self.user.wait()
 
