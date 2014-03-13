@@ -83,7 +83,7 @@ class Robot(object):
                     # Logging is already configured
                     config_logging = False )
 
-    def init(self):
+    def init(self, init_vision = True):
         "Find and initialise hardware"
         if self._initialised:
             raise AlreadyInitialised()
@@ -91,7 +91,8 @@ class Robot(object):
         logger.info( "Initialising hardware." )
         self.sricman = tssric.SricCtxMan()
         self._init_devs()
-        self._init_vision()
+        if init_vision:
+            self._init_vision()
 
         if not self._quiet:
             self._dump_devs()
