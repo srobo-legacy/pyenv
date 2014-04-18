@@ -41,6 +41,12 @@ def update_with_gui( root, bin_dir, log_dir ):
 
 def check_power_update():
     "Determine if a power board update is necessary using its vbuf"
+
+    # Disable power board firmware updates
+    # There's some kind of funk involved in the version checking
+    # that isn't worth fixing now.  (And never will be.)
+    return False
+
     import sr.pysric as pysric
     p = pysric.PySric()
     vb = sric_read_vbuf( p.devices[ pysric.SRIC_CLASS_POWER ][0] )
