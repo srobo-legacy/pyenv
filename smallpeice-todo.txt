@@ -1,4 +1,3 @@
-> Test JIO boards
 > Test motor boards
 > New splash screen
 
