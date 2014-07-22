@@ -86,7 +86,7 @@ def create_marker_lut(offset):
     return lut
 
 marker_luts = { "dev": create_marker_lut(0),
-                "comp": create_marker_lut(100) }
+                "comp": create_marker_lut(0) }
 
 MarkerBase = namedtuple( "Marker", "info timestamp res vertices centre orientation" ) 
 class Marker(MarkerBase):
