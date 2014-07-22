@@ -42,20 +42,23 @@ focal_length_lut = {
     (0x046d, 0x0825): C270_focal_length
 }
 
-MARKER_ARENA, MARKER_ROBOT, MARKER_PEDESTAL, MARKER_TOKEN = range(0,4)
+MARKER_ARENA = 'arena'
+MARKER_ROBOT = 'robot'
+MARKER_TOKEN_GOLD = 'token-gold'
+MARKER_TOKEN_SILVER = 'token-silver'
 
 marker_offsets = {
     MARKER_ARENA: 0,
     MARKER_ROBOT: 28,
-    MARKER_PEDESTAL: 32,
-    MARKER_TOKEN: 41
+    MARKER_TOKEN_GOLD: 32,
+    MARKER_TOKEN_SILVER: 43
 }
 
 marker_sizes = {
     MARKER_ARENA: 0.25 * (10.0/12),
     MARKER_ROBOT: 0.1 * (10.0/12),
-    MARKER_PEDESTAL: 0.2 * (10.0/12),
-    MARKER_TOKEN: 0.2 * (10.0/12)
+    MARKER_TOKEN_GOLD: 0.1 * (10.0/12),
+    MARKER_TOKEN_SILVER: 0.1 * (10.0/12)
 }
 
 MarkerInfo = namedtuple( "MarkerInfo", "code marker_type offset size" )
@@ -69,8 +72,8 @@ def create_marker_lut(offset):
     lut = {}
     for genre, num in [ ( MARKER_ARENA, 28 ),
                         ( MARKER_ROBOT, 4 ),
-                        ( MARKER_PEDESTAL, 9 ),
-                        ( MARKER_TOKEN, 24 )]:
+                        ( MARKER_TOKEN_GOLD, 11 ),
+                        ( MARKER_TOKEN_SILVER, 11 )]:
 
         for n in range(0,num):
             base_code = marker_offsets[genre] + n
