@@ -1,69 +1,23 @@
 #!/usr/bin/env python
-import os, sys, tempfile, subprocess, shutil, re, argparse
 
-def find_pyenv_rev( reporoot ):
-    "Return the revision of pyenv"
+import argparse
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
 
-    ver = subprocess.check_output( "git rev-list --max-count=1 HEAD",
-                                   cwd = reporoot, shell = True )
-    return ver.strip()
+from zip_utils import add_pyenv_rev_file, create_zip, \
+                      remove_gunk, remove_user_dir, \
+                      strip_binaries, REPO_ROOT, PYENV_DIR
 
-def add_pyenv_rev_file( reporoot, tmpd ):
-    "Write a file into tmpd indicating the pyenv revision"
+def copy_pyenv_to( target ):
+    subprocess.check_call( "cp -r %s/* %s" % (PYENV_DIR, target), shell = True )
 
-    f = open( os.path.join( tmpd, ".pyenv-rev" ), "w" )
-    f.write( "%s\n" % find_pyenv_rev(reporoot) )
-    f.close()
-
-def remove_user_dir( tmpd ):
-    "Remove any trace of a user directory"
-    udir = os.path.join( tmpd, "user" )
-    if os.path.exists( udir ):
-        shutil.rmtree( udir )
-
-def remove_gunk( tmpd ):
-    "Remove unnecessary files"
-    rem = [ ".gitignore", "*.pyc", "*~", "#*#", "log.txt*", ".*.swp", "*.save" ]
-    r = " -o ".join( [ "-name '%s' -print0 " % x for x in rem ] )
-
-    assert subprocess.call( "find . %s | xargs -0 rm -f" % r, cwd = tmpd, shell = True ) == 0
-
-def get_elf_mach( elfname ):
-    "Return the machine that the given ELF is for"
-    r = re.compile( "Machine:\s*(.+)$" )
-
-    o = subprocess.check_output( "readelf -h '%s' | grep 'Machine:'" % elfname, shell = True )
-
-    mach = r.search( o ).group(1)
-    return mach
-
-def strip_binary( elfpath ):
-    "Strip the given binary"
-
-    strippers = { "Texas Instruments msp430 microcontroller": "msp430-strip",
-                  "ARM": "arm-angstrom-linux-gnueabi-strip" }
-
-    mach = get_elf_mach( elfpath )
-    if mach not in strippers:
-        return
-
-    # Ignore errors: It's non-fatal if stuff doesn't strip
-    err = open("/dev/null", "w")
-    subprocess.call( "%s '%s'" % ( strippers[mach], elfpath ), shell = True,
-                         stdout = err, stderr = err )
-
-def strip_binaries( tmpd ):
-    "Strip debug symbols from all the ARM binaries"
-
-    for dirpath, dirnames, filenames in os.walk(tmpd):
-        for fname in filenames:
-            fpath = os.path.join( dirpath, fname )
-
-            ftype = subprocess.check_output( "file '%s'" % fpath, shell = True )
-
-            if "ELF" in ftype:
-                "It's an ELF file"
-                strip_binary(fpath)
+def copy_user_code( src, target_pyenv ):
+    # Copy in the user's code
+    target = os.path.join( target_pyenv, "user" )
+    shutil.copytree( src, target )
 
 parser = argparse.ArgumentParser(description='Pack a robot.zip from user code.')
 parser.add_argument('usercode',
@@ -86,15 +40,10 @@ if not os.path.isdir( USER_CODE_DIR ):
     print >>sys.stderr, "Error: Supplied user directory path is not a directory."
     exit(1)
 
-REPO_ROOT = os.path.dirname( __file__ )
-PYENV_DIR = os.path.join( REPO_ROOT, "pyenv" )
-assert os.path.isdir( PYENV_DIR )
-
 # Temporary directory for constructing everything inside
 tmpd = tempfile.mkdtemp( suffix="-pyenv" )
 
-assert subprocess.call( "cp -r %s/* %s" % (PYENV_DIR, tmpd),
-                        shell = True ) == 0
+copy_pyenv_to( tmpd )
 
 add_pyenv_rev_file( REPO_ROOT, tmpd )
 
@@ -106,24 +55,12 @@ remove_user_dir( tmpd )
 if not args.suppress_strip:
     strip_binaries( tmpd )
 
-# Copy in the user's code
-subprocess.check_call( ["cp", "-r", USER_CODE_DIR, os.path.join( tmpd, "user" )] )
+copy_user_code( USER_CODE_DIR, tmpd )
 
 if args.remove_gunk:
     "Remove gunk from the user directory as well"
     remove_gunk( tmpd )
 
-# Temporary directory for the zipfile to reside in
-ziptmpd = tempfile.mkdtemp( suffix="-pyenv" )
-tmpzip = os.path.join( ziptmpd, "robot.zip" )
+create_zip( tmpd, OUTPUT_ZIP )
 
-subprocess.check_call( ["zip", "-9qr", tmpzip, "./"], cwd = tmpd )
-
-if os.path.exists( OUTPUT_ZIP ):
-    os.unlink( OUTPUT_ZIP )
-
-shutil.move( tmpzip, OUTPUT_ZIP )
-
-shutil.rmtree( ziptmpd )
 shutil.rmtree( tmpd )
-
