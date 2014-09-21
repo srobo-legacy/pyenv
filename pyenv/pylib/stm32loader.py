@@ -310,7 +310,7 @@ def prog_cb(mode, prog):
     print mode, prog
 
 if __name__ == "__main__":
-    
+
     # Import Psyco if available
     try:
         import psyco

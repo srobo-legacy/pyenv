@@ -37,7 +37,7 @@ class UserCode(object):
         print "Starting user code."
         with open( self.start_fifo, "w" ) as f:
             f.write( json.dumps( match_info ) )
-        
+
     def end_match(self):
         "End the match by killing the user's code, and dropping the motor rail"
         # End the user's code

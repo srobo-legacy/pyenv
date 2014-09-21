@@ -92,7 +92,7 @@ def create_marker_lut(offset):
 marker_luts = { "dev": create_marker_lut(0),
                 "comp": create_marker_lut(100) }
 
-MarkerBase = namedtuple( "Marker", "info timestamp res vertices centre orientation" ) 
+MarkerBase = namedtuple( "Marker", "info timestamp res vertices centre orientation" )
 class Marker(MarkerBase):
     def __init__( self, *a, **kwd ):
         # Aliases
@@ -126,7 +126,7 @@ class Vision(object):
         self._buffers = None
         self._streaming = False
 
-        # Default to 800x600        
+        # Default to 800x600
         self._set_res( (800,600) )
         self._start()
         self.lock.release()

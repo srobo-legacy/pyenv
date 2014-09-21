@@ -103,4 +103,4 @@ class SricCtxMan(object):
                     self._devices[devclass].append(d)
 
         return self._devices
-                                     
+
