@@ -89,7 +89,7 @@ class SricCtxMan(object):
             self._devices = {}
 
             ps = self.get()
-            for devclass, devlist in ps.devices.iteritems():
+            for devclass, devlist in ps.devices.items():
                 self._devices[devclass] = []
 
                 if devclass in ( pysric.SRIC_CLASS_JOINTIO,

@@ -148,7 +148,7 @@ class Robot(object):
 
         logger.info( " - %s:", name )
 
-        for key, motor in devdict.iteritems():
+        for key, motor in devdict.items():
             if not isinstance( key, int ):
                 continue
 
@@ -212,7 +212,7 @@ class Robot(object):
         "Initialise the attributes for accessing devices"
         mapping = { pysric.SRIC_CLASS_SERVO: ( "servos", servo.Servo ) }
 
-        for devtype, info in mapping.iteritems():
+        for devtype, info in mapping.items():
             attrname, cls = info
             l = []
             setattr( self, attrname, l )

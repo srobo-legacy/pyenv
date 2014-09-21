@@ -1,4 +1,6 @@
 
+from __future__ import print_function
+
 import json
 import os
 from subprocess import Popen
@@ -15,7 +17,7 @@ class UserCode(object):
 
         user_rev = self._get_user_revision(user_dir)
 
-        print "Running user code", user_rev
+        print("Running user code", user_rev)
         self.proc = Popen( [ "python", "-m", "sr.loggrok",
                              user_exec,
                              "--usbkey", log_dir,
@@ -39,7 +41,7 @@ class UserCode(object):
         while not os.path.exists( self.start_fifo ):
             time.sleep(0.1)
 
-        print "Starting user code."
+        print("Starting user code.")
         with open( self.start_fifo, "w" ) as f:
             f.write( json.dumps( match_info ) )
 
@@ -57,9 +59,9 @@ class UserCode(object):
         power = sr.power.Power( sricman.devices[sr.pysric.SRIC_CLASS_POWER][0] )
         power._set_motor_rail( False )
 
-        print "Match ended -- User code killed."
+        print("Match ended -- User code killed.")
 
 
     def wait(self):
         r = self.proc.wait()
-        print "Robot code exited with code %i" % r
+        print("Robot code exited with code %i" % r)
