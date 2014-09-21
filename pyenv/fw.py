@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # Routines for invoking flashb and thus updating board firmware.
+
+from __future__ import print_function
+
 import json
 import os.path
 import stm32loader
@@ -36,7 +39,7 @@ def sric_read_vbuf(dev):
     return d
 
 def flash_motor(dev_path, serialnum, prog_cb, fw_path, log_fd):
-    print >>log_fd, "Flashing motor board", serialnum
+    print("Flashing motor board", serialnum, file=log_fd)
 
     c = stm32loader.CommandInterface( port=dev_path,
                                       baudrate=115200,
@@ -53,7 +56,7 @@ def flash_motor(dev_path, serialnum, prog_cb, fw_path, log_fd):
     if d != v:
         raise Exception("Firmware verification error :(")
 
-    print >>log_fd, "Verified OK"
+    print("Verified OK", file=log_fd)
 
     # Reset/quit bootloader
     c.cmdGo(0x8000000)
@@ -172,7 +175,7 @@ class FwUpdater(object):
             time.sleep(0.25)
         res = p.wait()
 
-        print >>self.fwlog, "flashb returned %i" % (res),
+        print("flashb returned %i" % (res), end=' ', file=self.fwlog)
 
     def check_motor_update(self, dev_path):
         try:
@@ -208,7 +211,7 @@ class FwUpdater(object):
             self.splash.stdin.write(s)
             self.splash.stdin.flush()
 
-            print >>self.fwlog, mode, prog
+            print(mode, prog, file=self.fwlog)
 
         flash_motor(dev_path, serialnum, prog_cb,
                     os.path.join( self.fwdir, "mcv4.bin" ),

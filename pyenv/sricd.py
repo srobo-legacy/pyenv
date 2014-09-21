@@ -1,5 +1,7 @@
 # Utility functions for starting/stopping sricd
 
+from __future__ import print_function
+
 import os
 import signal
 from subprocess import Popen
@@ -11,7 +13,7 @@ PID_FILE = "/tmp/sricd.pid"
 
 def kill():
     "Kill sricd"
-    print "Killing sricd"
+    print("Killing sricd")
     sys.stdout.flush()
 
     if os.path.exists(PID_FILE):
@@ -21,11 +23,11 @@ def kill():
 
         os.kill( pid, signal.SIGKILL )
     else:
-        print "sricd file doesn't exist"
+        print("sricd file doesn't exist")
 
 def start(logfile):
     out = open( logfile, "a" )
-    print >>out, "-" * 80
+    print("-" * 80, file=out)
 
     p = Popen( "sricd -p /tmp/sricd.pid -di -u /dev/ttyS1 -v",
                stdin = open("/dev/null", "r"),

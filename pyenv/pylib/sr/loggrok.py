@@ -43,4 +43,4 @@ if __name__ == "__main__":
     # Remove ourselves from the args
     sys.argv = sys.argv[1:]
 
-    execfile(prog, { "__file__": prog })
+    exec(compile(open(prog).read(), prog, 'exec'), { "__file__": prog })

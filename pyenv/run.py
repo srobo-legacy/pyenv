@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+from __future__ import print_function
+
 import optparse
 import os
 import shutil
@@ -22,7 +24,7 @@ class RobotRunner(object):
         self.config = config
         self.debug = debug
 
-        print "Initialising..."
+        print("Initialising...")
         self.init_env()
         self.init_fs()
 
@@ -105,8 +107,8 @@ class RobotRunner(object):
 
         mode_info = self.squidge.signal_start();
 
-        print "Mode: %s\t Zone: %i" % ( mode_info["mode"],
-                                        mode_info["zone"] )
+        print("Mode: %s\t Zone: %i" % ( mode_info["mode"],
+                                        mode_info["zone"] ))
 
         self.user.start( mode_info )
         start_time = time.time()
@@ -127,7 +129,7 @@ class RobotRunner(object):
                  "LD_LIBRARY_PATH": self.config.lib_dir,
                  "PYTHONPATH": self.config.pylib_dir,
                  "DISPLAY": ":0.0" }
-        for k,v in envs.iteritems():
+        for k,v in envs.items():
             os.environ[k] = v
 
         if "PATH" not in os.environ:
