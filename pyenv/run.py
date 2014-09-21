@@ -1,7 +1,18 @@
 #!/usr/bin/python
-import optparse, signal, sys, os, time, shutil
+
+import optparse
+import os
+import shutil
+import signal
 from subprocess import Popen, call
-import sricd, log, squidge, usercode, conf
+import sys
+import time
+
+import sricd
+import log
+import squidge
+import usercode
+import conf
 
 # The length of a match in seconds
 MATCH_DURATION = 180

@@ -1,5 +1,6 @@
 "pysric but with some threadlocal storage layered ontop"
-import pysric, threading
+import pysric
+import threading
 
 class TSSricDevice(object):
     """A wrapper around a SRIC device that uses a threadlocal sricd connection"""

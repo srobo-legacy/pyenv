@@ -1,4 +1,7 @@
-import os, sys
+
+import os
+import sys
+
 import addcr
 
 def init( fname, log_dir, debug ):

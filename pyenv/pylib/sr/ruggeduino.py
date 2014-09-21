@@ -1,6 +1,7 @@
+
 import logging
-import threading
 import serial
+import threading
 
 SERIAL_BAUD = 115200
 

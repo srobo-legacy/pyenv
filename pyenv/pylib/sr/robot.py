@@ -1,9 +1,15 @@
 # Copyright Robert Spanton 2011
-import json, sys, optparse, time, os, glob
+
+import glob
+import json
 import logging
-import pysric, tssric
-import motor, power, servo, ruggeduino, vision
-import usbenum
+import optparse
+import os
+import sys
+
+from . import pysric, tssric
+from . import motor, power, ruggeduino, servo, vision
+from . import usbenum
 
 logger = logging.getLogger( "sr.robot" )
 

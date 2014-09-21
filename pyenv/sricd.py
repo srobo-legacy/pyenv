@@ -1,6 +1,11 @@
 # Utility functions for starting/stopping sricd
+
+import os
+import signal
 from subprocess import Popen
-import os, signal, time, sys, threading, time
+import sys
+import threading
+import time
 
 PID_FILE = "/tmp/sricd.pid"
 

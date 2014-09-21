@@ -1,5 +1,10 @@
-import subprocess, sys, os, json, time, tempfile
-from subprocess import Popen, call
+
+import json
+import os
+from subprocess import Popen
+import sys
+import tempfile
+import time
 
 class UserCode(object):
     "Object for managing the user's code"

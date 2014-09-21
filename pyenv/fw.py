@@ -1,13 +1,15 @@
 #!/usr/bin/python
 # Routines for invoking flashb and thus updating board firmware.
 import json
-import subprocess, os.path, re
+import os.path
+import stm32loader
+import subprocess
+import threading
+import time
+
 import sr.motor
 from sr.power import Power
 import sr.pysric as pysric
-import stm32loader
-import threading
-import time
 
 SRIC_VERSION_BUF_CMD = 0x84
 

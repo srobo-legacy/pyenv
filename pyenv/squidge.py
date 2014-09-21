@@ -1,5 +1,10 @@
-import subprocess, time, json, os, tempfile
-from subprocess import Popen, call
+
+import json
+import os
+import subprocess
+from subprocess import Popen
+import tempfile
+import time
 
 class Squidge(object):
     "Object for managing the squidge GUI"

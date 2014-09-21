@@ -1,5 +1,11 @@
-import pykoki, threading, time, functools, re, subprocess
 from collections import namedtuple
+import functools
+import re
+import subprocess
+import threading
+import time
+
+import pykoki
 from pykoki import CameraParams, Point2Df, Point2Di
 
 C500_focal_length = {

@@ -1,5 +1,6 @@
-import os
+
 from ctypes import *
+import os
 
 # Magic device addresses
 SRIC_MASTER_DEVICE = 0

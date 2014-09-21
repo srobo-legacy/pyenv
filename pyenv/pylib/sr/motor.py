@@ -1,7 +1,8 @@
 import logging
-import threading
 import serial
-import usbenum
+import threading
+
+from . import usbenum
 
 SERIAL_BAUD = 1000000
 
