@@ -11,9 +11,18 @@ def find_pyenv_rev( reporoot ):
 def add_pyenv_rev_file( reporoot, tmpd ):
     "Write a file into tmpd indicating the pyenv revision"
 
-    f = open( os.path.join( tmpd, ".pyenv-rev" ), "w" )
-    f.write( "%s\n" % find_pyenv_rev(reporoot) )
-    f.close()
+    add_file( tmpd, ".pyenv-rev", find_pyenv_rev(reporoot) )
+
+def add_team_file( tmpd, team_tla ):
+    "Write a file into tmpd indicating which team this zip is for"
+
+    add_file( tmpd, ".team", team_tla )
+
+def add_file( tmpd, name, content ):
+    "Write a file into tmpd"
+
+    with open( os.path.join( tmpd, name ), "w" ) as f:
+        f.write( "%s\n" % content )
 
 def remove_user_dir( tmpd ):
     "Remove any trace of a user directory"
@@ -66,6 +75,9 @@ def strip_binaries( tmpd ):
                 strip_binary(fpath)
 
 parser = argparse.ArgumentParser(description='Pack a robot.zip from user code.')
+parser.add_argument('team_tla',
+                    nargs='?',
+                    help='The TLA of the team the zip is being created for')
 parser.add_argument('usercode',
                     help='user code source directory, containing a robot.py')
 parser.add_argument('output',
@@ -97,6 +109,7 @@ assert subprocess.call( "cp -r %s/* %s" % (PYENV_DIR, tmpd),
                         shell = True ) == 0
 
 add_pyenv_rev_file( REPO_ROOT, tmpd )
+add_team_file( tmpd, args.team_tla )
 
 if not args.remove_gunk:
     "Remove gunk before the user files are put in"
